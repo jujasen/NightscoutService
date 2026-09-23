@@ -13,6 +13,7 @@ public enum Action: Codable {
     case cancelTemporaryOverride(OverrideCancelAction)
     case bolusEntry(BolusAction)
     case carbsEntry(CarbAction)
+    case therapySettings(TherapySettingsAction)
     
     public var description: String {
         return "\(actionName) \(actionParameterDescription)"
@@ -28,6 +29,8 @@ public enum Action: Codable {
             return LocalizedString("Cancel Override", comment: "The remote action name for Cancel Override")
         case .temporaryScheduleOverride:
             return LocalizedString("Override", comment: "The remote action name for Override")
+        case .therapySettings:
+            return LocalizedString("Therapy Settings", comment: "The remote action name for Therapy Settings")
         }
     }
     
@@ -43,6 +46,15 @@ public enum Action: Codable {
             return ""
         case .temporaryScheduleOverride(let overrideAction):
             return overrideAction.name
+        case .therapySettings(let therapySettingsAction):
+            var changed = [String]()
+            if therapySettingsAction.carbRatio != nil {
+                changed.append(LocalizedString("Carb Ratios", comment: "The remote therapy settings name for the carb ratio schedule"))
+            }
+            if therapySettingsAction.insulinSensitivity != nil {
+                changed.append(LocalizedString("Insulin Sensitivities", comment: "The remote therapy settings name for the insulin sensitivity schedule"))
+            }
+            return changed.joined(separator: ", ")
         }
     }
     

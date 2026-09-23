@@ -458,6 +458,13 @@ extension NightscoutService: RemoteCommandSourceV1Delegate {
                 )
                 success = true
                 message = String(format: "Carbs entry of %.1f g delivered successfully", carbCommand.amountInGrams)
+
+            case .therapySettings(let therapySettingsCommand):
+                commandType = .therapySettings
+                let change = try therapySettingsCommand.change()
+                try await self.serviceDelegate?.applyRemoteTherapySettings(change)
+                success = true
+                message = "\(action.actionParameterDescription) updated successfully"
             }
         } catch {
             message = "Command failed: \(error.localizedDescription)"

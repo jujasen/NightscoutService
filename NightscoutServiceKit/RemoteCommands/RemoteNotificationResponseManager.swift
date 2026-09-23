@@ -45,6 +45,7 @@ class RemoteNotificationResponseManager {
         case carbs = "carbs"
         case override = "override"
         case cancelOverride = "cancel_override"
+        case therapySettings = "therapy_settings"
     }
     
     func sendResponseNotification(

@@ -29,10 +29,12 @@
 		A941B08929BCB99C00F91340 /* RemoteCommandValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B08829BCB99C00F91340 /* RemoteCommandValidator.swift */; };
 		A941B09029BD4A9E00F91340 /* CarbRemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B08B29BD4A9D00F91340 /* CarbRemoteNotification.swift */; };
 		A941B09129BD4A9E00F91340 /* BolusRemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B08C29BD4A9D00F91340 /* BolusRemoteNotification.swift */; };
+		935917177FCEFFFC592B6942 /* TherapySettingsRemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C55F6B45F8F07311762E42B1 /* TherapySettingsRemoteNotification.swift */; };
 		A941B09229BD4A9F00F91340 /* OverrideCancelRemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B08D29BD4A9E00F91340 /* OverrideCancelRemoteNotification.swift */; };
 		A941B09329BD4A9F00F91340 /* RemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B08E29BD4A9E00F91340 /* RemoteNotification.swift */; };
 		A941B09429BD4A9F00F91340 /* OverrideRemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B08F29BD4A9E00F91340 /* OverrideRemoteNotification.swift */; };
 		A941B09929BD4ACA00F91340 /* BolusRemoteNotificationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B09529BD4AC900F91340 /* BolusRemoteNotificationTestCase.swift */; };
+		8EC878F8EBAE251B0E718F9C /* TherapySettingsRemoteNotificationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D99A66334005DAF611113E5B /* TherapySettingsRemoteNotificationTestCase.swift */; };
 		A941B09A29BD4ACA00F91340 /* CarbRemoteNotificationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B09629BD4ACA00F91340 /* CarbRemoteNotificationTestCase.swift */; };
 		A941B09B29BD4ACA00F91340 /* OverrideCancelRemoteNotificationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B09729BD4ACA00F91340 /* OverrideCancelRemoteNotificationTestCase.swift */; };
 		A941B09C29BD4ACA00F91340 /* OverrideRemoteNotificationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A941B09829BD4ACA00F91340 /* OverrideRemoteNotificationTestCase.swift */; };
@@ -49,6 +51,7 @@
 		A9AA6E6429EB07D7008FFA78 /* CarbAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6E5E29EB07D6008FFA78 /* CarbAction.swift */; };
 		A9AA6E6529EB07D7008FFA78 /* OverrideCancelAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6E5F29EB07D6008FFA78 /* OverrideCancelAction.swift */; };
 		A9AA6E6629EB07D7008FFA78 /* BolusAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9AA6E6029EB07D6008FFA78 /* BolusAction.swift */; };
+		D396362C0CC9D87600632D02 /* TherapySettingsAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE2F88B173CC68D2562B87A /* TherapySettingsAction.swift */; };
 		A9B007B322BD6FF7000131DE /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B007B222BD6FF7000131DE /* LocalizedString.swift */; };
 		A9B007B422BD6FF7000131DE /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B007B222BD6FF7000131DE /* LocalizedString.swift */; };
 		A9C62DA42331CAD400535612 /* OSLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C62DA32331CAD400535612 /* OSLog.swift */; };
@@ -163,10 +166,12 @@
 		A941B08829BCB99C00F91340 /* RemoteCommandValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteCommandValidator.swift; sourceTree = "<group>"; };
 		A941B08B29BD4A9D00F91340 /* CarbRemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarbRemoteNotification.swift; sourceTree = "<group>"; };
 		A941B08C29BD4A9D00F91340 /* BolusRemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BolusRemoteNotification.swift; sourceTree = "<group>"; };
+		C55F6B45F8F07311762E42B1 /* TherapySettingsRemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TherapySettingsRemoteNotification.swift; sourceTree = "<group>"; };
 		A941B08D29BD4A9E00F91340 /* OverrideCancelRemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverrideCancelRemoteNotification.swift; sourceTree = "<group>"; };
 		A941B08E29BD4A9E00F91340 /* RemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotification.swift; sourceTree = "<group>"; };
 		A941B08F29BD4A9E00F91340 /* OverrideRemoteNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverrideRemoteNotification.swift; sourceTree = "<group>"; };
 		A941B09529BD4AC900F91340 /* BolusRemoteNotificationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BolusRemoteNotificationTestCase.swift; sourceTree = "<group>"; };
+		D99A66334005DAF611113E5B /* TherapySettingsRemoteNotificationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TherapySettingsRemoteNotificationTestCase.swift; sourceTree = "<group>"; };
 		A941B09629BD4ACA00F91340 /* CarbRemoteNotificationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarbRemoteNotificationTestCase.swift; sourceTree = "<group>"; };
 		A941B09729BD4ACA00F91340 /* OverrideCancelRemoteNotificationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverrideCancelRemoteNotificationTestCase.swift; sourceTree = "<group>"; };
 		A941B09829BD4ACA00F91340 /* OverrideRemoteNotificationTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverrideRemoteNotificationTestCase.swift; sourceTree = "<group>"; };
@@ -185,6 +190,7 @@
 		A9AA6E5E29EB07D6008FFA78 /* CarbAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarbAction.swift; sourceTree = "<group>"; };
 		A9AA6E5F29EB07D6008FFA78 /* OverrideCancelAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverrideCancelAction.swift; sourceTree = "<group>"; };
 		A9AA6E6029EB07D6008FFA78 /* BolusAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BolusAction.swift; sourceTree = "<group>"; };
+		5CE2F88B173CC68D2562B87A /* TherapySettingsAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TherapySettingsAction.swift; sourceTree = "<group>"; };
 		A9B007B222BD6FF7000131DE /* LocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedString.swift; sourceTree = "<group>"; };
 		A9C62DA32331CAD400535612 /* OSLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OSLog.swift; sourceTree = "<group>"; };
 		A9E2DA97262351F900AB8C89 /* OTPSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPSelectionView.swift; sourceTree = "<group>"; };
@@ -320,6 +326,7 @@
 			children = (
 				A91BAC2B22BC691A00ABF1BB /* Info.plist */,
 				A941B09529BD4AC900F91340 /* BolusRemoteNotificationTestCase.swift */,
+				D99A66334005DAF611113E5B /* TherapySettingsRemoteNotificationTestCase.swift */,
 				A941B09629BD4ACA00F91340 /* CarbRemoteNotificationTestCase.swift */,
 				A95F887426C694E900D8A009 /* OTPManagerTestCase.swift */,
 				A941B09729BD4ACA00F91340 /* OverrideCancelRemoteNotificationTestCase.swift */,
@@ -360,6 +367,7 @@
 			isa = PBXGroup;
 			children = (
 				A941B08C29BD4A9D00F91340 /* BolusRemoteNotification.swift */,
+				C55F6B45F8F07311762E42B1 /* TherapySettingsRemoteNotification.swift */,
 				A941B08B29BD4A9D00F91340 /* CarbRemoteNotification.swift */,
 				A941B08D29BD4A9E00F91340 /* OverrideCancelRemoteNotification.swift */,
 				A941B08F29BD4A9E00F91340 /* OverrideRemoteNotification.swift */,
@@ -414,6 +422,7 @@
 			children = (
 				A9AA6E5D29EB07D6008FFA78 /* Action.swift */,
 				A9AA6E6029EB07D6008FFA78 /* BolusAction.swift */,
+				5CE2F88B173CC68D2562B87A /* TherapySettingsAction.swift */,
 				A9AA6E5E29EB07D6008FFA78 /* CarbAction.swift */,
 				A9AA6E5A29EB072E008FFA78 /* OverrideAction.swift */,
 				A9AA6E5F29EB07D6008FFA78 /* OverrideCancelAction.swift */,
@@ -712,6 +721,7 @@
 			files = (
 				A9AA6E5B29EB072E008FFA78 /* OverrideAction.swift in Sources */,
 				A941B09129BD4A9E00F91340 /* BolusRemoteNotification.swift in Sources */,
+				935917177FCEFFFC592B6942 /* TherapySettingsRemoteNotification.swift in Sources */,
 				C177C4522ABE2D9300911B56 /* PersistedCgmEvent.swift in Sources */,
 				A993990322BC7095005E39D3 /* NightscoutService.swift in Sources */,
 				A934B6162358F42A00949C8B /* StoredDosingDecision.swift in Sources */,
@@ -720,6 +730,7 @@
 				A90E39A322BC782C0016DFE8 /* SyncCarbObject.swift in Sources */,
 				A941B09329BD4A9F00F91340 /* RemoteNotification.swift in Sources */,
 				A9AA6E6629EB07D7008FFA78 /* BolusAction.swift in Sources */,
+				D396362C0CC9D87600632D02 /* TherapySettingsAction.swift in Sources */,
 				A934B61A2358F5FC00949C8B /* TemporaryScheduleOverride.swift in Sources */,
 				A941B09029BD4A9E00F91340 /* CarbRemoteNotification.swift in Sources */,
 				A94DA7642353CF930082E26D /* StoredGlucoseSample.swift in Sources */,
@@ -756,6 +767,7 @@
 				A941B09A29BD4ACA00F91340 /* CarbRemoteNotificationTestCase.swift in Sources */,
 				A941B09C29BD4ACA00F91340 /* OverrideRemoteNotificationTestCase.swift in Sources */,
 				A941B09929BD4ACA00F91340 /* BolusRemoteNotificationTestCase.swift in Sources */,
+				8EC878F8EBAE251B0E718F9C /* TherapySettingsRemoteNotificationTestCase.swift in Sources */,
 				A941B09B29BD4ACA00F91340 /* OverrideCancelRemoteNotificationTestCase.swift in Sources */,
 				A95F887526C694E900D8A009 /* OTPManagerTestCase.swift in Sources */,
 			);

@@ -108,6 +108,8 @@ extension Dictionary<String, AnyObject> {
             return try OverrideRemoteNotification(dictionary: self)
         } else if OverrideCancelRemoteNotification.includedInNotification(self) {
             return try OverrideCancelRemoteNotification(dictionary: self)
+        } else if TherapySettingsRemoteNotification.includedInNotification(self) {
+            return try TherapySettingsRemoteNotification(dictionary: self)
         } else {
             throw RemoteNotificationError.unhandledNotification(self)
         }
