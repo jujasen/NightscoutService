@@ -2,7 +2,8 @@
 //  TherapySettingsRemoteNotification.swift
 //  NightscoutServiceKit
 //
-//  A caregiver app (LoopFollow) replacing the carb ratio and/or insulin sensitivity schedule:
+//  A caregiver app (LoopFollow) changing therapy settings. Every key of "therapy-settings" is
+//  optional (see TherapySettingsAction); a v1 sender only replaces carb ratios and/or sensitivities:
 //
 //  { "therapy-settings": { "carb-ratio": [{"start": 0, "value": 12}, {"start": 21600, "value": 10}],
 //                          "insulin-sensitivity": [{"start": 0, "value": 9.5}],

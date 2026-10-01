@@ -47,14 +47,7 @@ public enum Action: Codable {
         case .temporaryScheduleOverride(let overrideAction):
             return overrideAction.name
         case .therapySettings(let therapySettingsAction):
-            var changed = [String]()
-            if therapySettingsAction.carbRatio != nil {
-                changed.append(LocalizedString("Carb Ratios", comment: "The remote therapy settings name for the carb ratio schedule"))
-            }
-            if therapySettingsAction.insulinSensitivity != nil {
-                changed.append(LocalizedString("Insulin Sensitivities", comment: "The remote therapy settings name for the insulin sensitivity schedule"))
-            }
-            return changed.joined(separator: ", ")
+            return therapySettingsAction.changedSettingNames.joined(separator: ", ")
         }
     }
     
