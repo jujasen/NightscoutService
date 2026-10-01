@@ -1333,9 +1333,9 @@
 		};
 		C1CEBFF229BCC104007FD8A3 /* XCRemoteSwiftPackageReference "NightscoutKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/LoopKit/NightscoutKit";
+			repositoryURL = "https://github.com/jujasen/NightscoutKit";
 			requirement = {
-				branch = main;
+				branch = "loop-extra-settings";
 				kind = branch;
 			};
 		};

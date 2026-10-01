@@ -47,6 +47,14 @@ extension StoredSettings {
                     upper: preMealTargetRange.maxValue))
         }
 
+        var nightscoutWorkoutTargetRange: ClosedRange<Double>?
+        if let workoutTargetRange = workoutTargetRange?.doubleRange(for: bloodGlucoseUnit) {
+            nightscoutWorkoutTargetRange = ClosedRange(
+                uncheckedBounds: (
+                    lower: workoutTargetRange.minValue,
+                    upper: workoutTargetRange.maxValue))
+        }
+
         return NightscoutKit.LoopSettings(
             dosingEnabled: dosingEnabled,
             overridePresets: overridePresets?.map { $0.nsScheduleOverride(for: bloodGlucoseUnit) } ?? [],
@@ -57,7 +65,9 @@ extension StoredSettings {
             maximumBolus: maximumBolus,
             deviceToken: deviceToken,
             bundleIdentifier: Bundle.main.bundleIdentifier,
-            dosingStrategy: automaticDosingStrategy.name)
+            dosingStrategy: automaticDosingStrategy.name,
+            workoutTargetRange: nightscoutWorkoutTargetRange,
+            insulinModel: defaultRapidActingModel?.modelType.insulinModelPresetName)
     }
 
     var profile: ProfileSet.Profile? {
@@ -170,5 +180,18 @@ fileprivate extension Data {
             even = !even
         }
         guard even else { return nil }
+    }
+}
+
+private extension StoredInsulinModel.ModelType {
+    /// The `ExponentialInsulinModelPreset` raw value a caregiver app sends back to change the model.
+    var insulinModelPresetName: String {
+        switch self {
+        case .afrezza: return "afrezza"
+        case .fiasp: return "fiasp"
+        case .lyumjev: return "lyumjev"
+        case .rapidAdult: return "rapidActingAdult"
+        case .rapidChild: return "rapidActingChild"
+        }
     }
 }
