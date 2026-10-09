@@ -67,7 +67,8 @@ extension StoredSettings {
             bundleIdentifier: Bundle.main.bundleIdentifier,
             dosingStrategy: automaticDosingStrategy.name,
             workoutTargetRange: nightscoutWorkoutTargetRange,
-            insulinModel: defaultRapidActingModel?.modelType.insulinModelPresetName)
+            insulinModel: defaultRapidActingModel?.modelType.insulinModelPresetName,
+            appSettings: appSettings.flatMap { try? JSONSerialization.jsonObject(with: $0) as? [String: Any] })
     }
 
     var profile: ProfileSet.Profile? {
