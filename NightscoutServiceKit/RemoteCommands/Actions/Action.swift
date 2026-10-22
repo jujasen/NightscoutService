@@ -14,6 +14,7 @@ public enum Action: Codable {
     case bolusEntry(BolusAction)
     case carbsEntry(CarbAction)
     case therapySettings(TherapySettingsAction)
+    case carbsEdit(CarbEditAction)
     
     public var description: String {
         return "\(actionName) \(actionParameterDescription)"
@@ -31,6 +32,11 @@ public enum Action: Codable {
             return LocalizedString("Override", comment: "The remote action name for Override")
         case .therapySettings:
             return LocalizedString("Therapy Settings", comment: "The remote action name for Therapy Settings")
+        case .carbsEdit(let carbEditAction):
+            if carbEditAction.isDelete {
+                return LocalizedString("Delete Carb Entry", comment: "The remote action name for deleting a carb entry")
+            }
+            return LocalizedString("Edit Carb Entry", comment: "The remote action name for editing a carb entry")
         }
     }
     
@@ -48,6 +54,12 @@ public enum Action: Codable {
             return overrideAction.name
         case .therapySettings(let therapySettingsAction):
             return therapySettingsAction.changedSettingNames.joined(separator: ", ")
+        case .carbsEdit(let carbEditAction):
+            guard !carbEditAction.isDelete, let amountInGrams = carbEditAction.amountInGrams else {
+                return ""
+            }
+            let amountFormatted = Self.numberFormatter.string(from: amountInGrams as NSNumber) ?? ""
+            return "\(amountFormatted)" + " " + carbGramAbbreviation
         }
     }
     
