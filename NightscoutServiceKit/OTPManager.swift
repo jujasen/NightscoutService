@@ -77,7 +77,10 @@ public class OTPManager {
     let maxOTPsToAccept: Int
     
     public static var defaultTokenPeriod: TimeInterval = 30
-    public static var defaultMaxOTPsToAccept = 2
+    // Remote commands expire 5 minutes after they are sent, and a push can take minutes
+    // to reach the phone. Accept the passwords of those 5 minutes (10 periods + current)
+    // so a late push is still carried out; each password is still accepted only once.
+    public static var defaultMaxOTPsToAccept = 11
     
     public init(secretStore: OTPSecretStore = KeychainManager(), nowDateSource: @escaping () -> Date = {Date()}, tokenPeriod: TimeInterval = OTPManager.defaultTokenPeriod, maxOTPsToAccept: Int = OTPManager.defaultMaxOTPsToAccept) {
         self.secretStore = secretStore

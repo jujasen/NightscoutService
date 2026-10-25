@@ -137,6 +137,16 @@ class OTPManagerTestCase: XCTestCase {
         XCTAssertThrowsError(try manager.validatePassword(password: otp.password, deliveryDate: otp.period.startDate))
     }
     
+    func testDefaultWindow_AcceptsPasswordsFromTheLastFiveMinutes() throws {
+        let now = Date(timeIntervalSince1970: 1670001615)
+        let manager = OTPManager(secretStore: OTPTestCoordinator(), nowDateSource: {now})
+
+        let oldest = manager.oldestAcceptableOTPPeriod().startDate
+        XCTAssertLessThanOrEqual(oldest, now.addingTimeInterval(-5 * 60))
+        XCTAssertGreaterThan(oldest, now.addingTimeInterval(-6 * 60))
+        XCTAssertEqual(try manager.validOTPs().count, OTPManager.defaultMaxOTPsToAccept)
+    }
+
     func testValidateOTP_WhenOTPInsertionFails_Throws() throws {
         
         //Arrange
@@ -159,6 +169,8 @@ class OTPTestCoordinator: OTPSecretStore {
     var recentlyAcceptedPasswords = [String]()
     var simulateFailedPasswordInsertion: Bool = false
     private let otpSequenceAscending: [OTP]
+    /// The fixed sequence below has 4 codes, so these tests use a window of 2, not the default.
+    let maxOTPsToAccept = 2
     
     init(){
         
@@ -189,7 +201,7 @@ class OTPTestCoordinator: OTPSecretStore {
     }
     
     func createOTPManager() -> OTPManager {
-        return OTPManager(secretStore: self, nowDateSource: {self.currentOTP().period.startDate})
+        return OTPManager(secretStore: self, nowDateSource: {self.currentOTP().period.startDate}, maxOTPsToAccept: maxOTPsToAccept)
     }
     
     
@@ -226,7 +238,7 @@ class OTPTestCoordinator: OTPSecretStore {
     //MARK: OTP Test Data
     
     func validOTPs() -> [OTP] {
-        let firstIndex = otpSequenceAscending.count - OTPManager.defaultMaxOTPsToAccept
+        let firstIndex = otpSequenceAscending.count - maxOTPsToAccept
         return Array(otpSequenceAscending[firstIndex...])
     }
     
@@ -239,7 +251,7 @@ class OTPTestCoordinator: OTPSecretStore {
     }
     
     func expiredOTP() -> OTP {
-        assert(otpSequenceAscending.count > OTPManager.defaultMaxOTPsToAccept)
+        assert(otpSequenceAscending.count > maxOTPsToAccept)
         return otpSequenceAscending.first!
     }
     
