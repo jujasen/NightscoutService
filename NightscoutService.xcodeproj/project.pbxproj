@@ -10,6 +10,8 @@
 		48354A37C8FB691E5BB25EE7 /* CarbEditRemoteNotificationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A5EBB894CBC3E320896D98 /* CarbEditRemoteNotificationTestCase.swift */; };
 		B7468D4BEF9DA6502C2C4897 /* CarbEditRemoteNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1E704503E19F09E50B662B /* CarbEditRemoteNotification.swift */; };
 		82DA146A5B7128529DC651A7 /* CarbEditAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBAF69BAD7171E644F945509 /* CarbEditAction.swift */; };
+		C0FFEE0100000000000000A2 /* RemoteCommandInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE0100000000000000A1 /* RemoteCommandInbox.swift */; };
+		C0FFEE0100000000000000B2 /* RemoteCommandInboxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FFEE0100000000000000B1 /* RemoteCommandInboxTests.swift */; };
 		657F99DE2F0BC17B00F732BD /* RemoteNotificationResponseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657F99DD2F0BC17B00F732BD /* RemoteNotificationResponseManager.swift */; };
 		657F99DF2F0BC17B00F732BD /* APNSJWTManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657F99DB2F0BC17B00F732BD /* APNSJWTManager.swift */; };
 		657F99E02F0BC17B00F732BD /* OTPSecureMessenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 657F99DC2F0BC17B00F732BD /* OTPSecureMessenger.swift */; };
@@ -149,6 +151,8 @@
 		BBAF69BAD7171E644F945509 /* CarbEditAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarbEditAction.swift; sourceTree = "<group>"; };
 		657F99DB2F0BC17B00F732BD /* APNSJWTManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APNSJWTManager.swift; sourceTree = "<group>"; };
 		657F99DC2F0BC17B00F732BD /* OTPSecureMessenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OTPSecureMessenger.swift; sourceTree = "<group>"; };
+		C0FFEE0100000000000000A1 /* RemoteCommandInbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCommandInbox.swift; sourceTree = "<group>"; };
+		C0FFEE0100000000000000B1 /* RemoteCommandInboxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCommandInboxTests.swift; sourceTree = "<group>"; };
 		657F99DD2F0BC17B00F732BD /* RemoteNotificationResponseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteNotificationResponseManager.swift; sourceTree = "<group>"; };
 		A90E399D22BC76DB0016DFE8 /* TimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeInterval.swift; sourceTree = "<group>"; };
 		A90E39A022BC773A0016DFE8 /* NightscoutUploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightscoutUploader.swift; sourceTree = "<group>"; };
@@ -336,6 +340,7 @@
 				66A5EBB894CBC3E320896D98 /* CarbEditRemoteNotificationTestCase.swift */,
 				A941B09629BD4ACA00F91340 /* CarbRemoteNotificationTestCase.swift */,
 				A95F887426C694E900D8A009 /* OTPManagerTestCase.swift */,
+				C0FFEE0100000000000000B1 /* RemoteCommandInboxTests.swift */,
 				A941B09729BD4ACA00F91340 /* OverrideCancelRemoteNotificationTestCase.swift */,
 				A941B09829BD4ACA00F91340 /* OverrideRemoteNotificationTestCase.swift */,
 				A95F887326C694E800D8A009 /* NightscoutServiceKitTests-Bridging-Header.h */,
@@ -399,6 +404,7 @@
 				657F99DB2F0BC17B00F732BD /* APNSJWTManager.swift */,
 				657F99DC2F0BC17B00F732BD /* OTPSecureMessenger.swift */,
 				657F99DD2F0BC17B00F732BD /* RemoteNotificationResponseManager.swift */,
+				C0FFEE0100000000000000A1 /* RemoteCommandInbox.swift */,
 				A9AA6E5729EB06AA008FFA78 /* Actions */,
 				A941B08629BCB87500F91340 /* RemoteCommandSource.swift */,
 				A98A0C1F29C71E8F0067DE0F /* V1 */,
@@ -761,6 +767,7 @@
 				A941B08729BCB87500F91340 /* RemoteCommandSource.swift in Sources */,
 				A941B09229BD4A9F00F91340 /* OverrideCancelRemoteNotification.swift in Sources */,
 				657F99DE2F0BC17B00F732BD /* RemoteNotificationResponseManager.swift in Sources */,
+				C0FFEE0100000000000000A2 /* RemoteCommandInbox.swift in Sources */,
 				657F99DF2F0BC17B00F732BD /* APNSJWTManager.swift in Sources */,
 				657F99E02F0BC17B00F732BD /* OTPSecureMessenger.swift in Sources */,
 				C1398D2227C434FB00416AD6 /* Data.swift in Sources */,
@@ -782,6 +789,7 @@
 				48354A37C8FB691E5BB25EE7 /* CarbEditRemoteNotificationTestCase.swift in Sources */,
 				A941B09B29BD4ACA00F91340 /* OverrideCancelRemoteNotificationTestCase.swift in Sources */,
 				A95F887526C694E900D8A009 /* OTPManagerTestCase.swift in Sources */,
+				C0FFEE0100000000000000B2 /* RemoteCommandInboxTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

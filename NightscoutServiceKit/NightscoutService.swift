@@ -63,6 +63,42 @@ public final class NightscoutService: Service {
     
     private let commandSourceV1: RemoteCommandSourceV1
 
+    /// Commands waiting in Nightscout, fetched on every Loop run so they don't depend on a push getting through.
+    private var remoteCommandInbox: RemoteCommandInbox!
+
+    private func makeRemoteCommandInbox() -> RemoteCommandInbox {
+        RemoteCommandInbox(
+            transport: { [weak self] in
+                guard let self, let siteURL = self.siteURL, let apiSecret = self.apiSecret, !apiSecret.isEmpty else { return nil }
+                return NightscoutRemoteCommandTransport(siteURL: siteURL, apiSecret: apiSecret)
+            },
+            secret: { KeychainManager().tokenSecretKey() },
+            execute: { [weak self] notification in
+                guard let self else { throw NightscoutServiceError.missingCommandSource }
+                let remoteNotification = try notification.toRemoteNotification()
+                let action = remoteNotification.toRemoteAction()
+                try await self.commandSourceV1(self.commandSourceV1, handleAction: action, remoteNotification: remoteNotification)
+                return action.description
+            }
+        )
+    }
+
+    /// Looks for remote commands in Nightscout; `force` when a push asked for it.
+    public func checkForRemoteCommands(force: Bool = false) {
+        guard hasConfiguration else { return }
+        let inbox = remoteCommandInbox!
+        // Loop is often in the background here; ask for time to finish (a bolus takes a few seconds).
+        ProcessInfo.processInfo.performExpiringActivity(withReason: "Remote commands from Nightscout") { expired in
+            guard !expired else { return }
+            let done = DispatchSemaphore(value: 0)
+            Task {
+                await inbox.poll(force: force)
+                done.signal()
+            }
+            _ = done.wait(timeout: .now() + 60)
+        }
+    }
+
     private let log = OSLog(category: "NightscoutService")
 
     public init() {
@@ -71,6 +107,7 @@ public final class NightscoutService: Service {
         self.otpManager = OTPManager(secretStore: KeychainManager())
         self.commandSourceV1 = RemoteCommandSourceV1(otpManager: otpManager)
         self.commandSourceV1.delegate = self
+        self.remoteCommandInbox = makeRemoteCommandInbox()
     }
 
     public required init?(rawState: RawStateValue) {
@@ -87,6 +124,7 @@ public final class NightscoutService: Service {
         self.otpManager = OTPManager(secretStore: KeychainManager())
         self.commandSourceV1 = RemoteCommandSourceV1(otpManager: otpManager)
         self.commandSourceV1.delegate = self
+        self.remoteCommandInbox = makeRemoteCommandInbox()
         
         restoreCredentials()
     }
@@ -274,6 +312,9 @@ extension NightscoutService: RemoteDataService {
     public var dosingDecisionDataLimit: Int? { return 50 }  // Each can be up to 20K bytes of serialized JSON, target ~1M or less
 
     public func uploadDosingDecisionData(_ stored: [StoredDosingDecision], completion: @escaping (Result<Bool, Error>) -> Void) {
+        // Called after every Loop run, also in the background.
+        checkForRemoteCommands()
+
         guard hasConfiguration, let uploader = uploader else {
             completion(.success(true))
             return
@@ -315,6 +356,9 @@ extension NightscoutService: RemoteDataService {
     public var glucoseDataLimit: Int? { return 1000 }
 
     public func uploadGlucoseData(_ stored: [StoredGlucoseSample], completion: @escaping (Result<Bool, Error>) -> Void) {
+        // A new CGM reading wakes Loop even when a run is skipped.
+        checkForRemoteCommands()
+
         guard hasConfiguration, let uploader = uploader else {
             completion(.success(true))
             return
@@ -399,6 +443,13 @@ extension NightscoutService: RemoteDataService {
 
     
     public func remoteNotificationWasReceived(_ notification: [String: AnyObject]) async throws {
+        // A command that also waits in Nightscout: the push is only a nudge to fetch it now, so it is
+        // carried out once, with its outcome written back, however many ways it reaches Loop.
+        if notification["command-id"] is String {
+            guard hasConfiguration else { throw NightscoutServiceError.missingCredentials }
+            await remoteCommandInbox.poll(force: true)
+            return
+        }
         let commandSource = try commandSource(notification: notification)
         await commandSource.remoteNotificationWasReceived(notification)
     }
