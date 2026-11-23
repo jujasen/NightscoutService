@@ -11,8 +11,11 @@ import Foundation
 public struct BolusAction: Codable {
     
     public let amountInUnits: Double
+    /// See `BolusRemoteNotification.knownDosesUntil`.
+    public let knownDosesUntil: Date?
     
-    public init(amountInUnits: Double) {
+    public init(amountInUnits: Double, knownDosesUntil: Date? = nil) {
         self.amountInUnits = amountInUnits
+        self.knownDosesUntil = knownDosesUntil
     }
 }

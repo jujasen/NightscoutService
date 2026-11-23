@@ -26,6 +26,8 @@ import OSLog
 ///   Loop's OTP secret (the `secret` of the QR code). Reading Nightscout is not enough to make one.
 /// - `status`: `pending` from the sender; Loop sets `running`, then `done`, `failed`, `uncertain` or `rejected`
 /// - `statusMessage`, `handledAt`: written by Loop
+/// - `statusDetails`: written by Loop when it refused for a reason the sender can show in its own
+///   words (`RemoteActionRejection`), such as a bolus stopped by a dose the sender had not seen
 struct InboxCommand: Equatable {
     static let eventType = "Remote Command"
     /// A command must expire this soon after it was sent, so nothing old is ever carried out.
@@ -288,12 +290,17 @@ actor RemoteCommandInbox {
 
         let status: InboxStatus
         let message: String
+        var details: [String: Any]?
         do {
             message = try await execute(notification)
             status = .done
         } catch {
             if case PumpManagerError.uncertainDelivery = error {
                 status = .uncertain
+            } else if let rejection = error as? RemoteActionRejection {
+                // Loop chose to give nothing, and says why in a form the sender can show.
+                status = .rejected
+                details = rejection.remoteActionDetails
             } else {
                 status = .failed
             }
@@ -302,17 +309,20 @@ actor RemoteCommandInbox {
         log.default("Remote command %{public}@: %{public}@ %{public}@", command.commandId, status.rawValue, message)
 
         do {
-            try await transport.replace(Self.updated(treatment, status: status, message: message, at: now()))
+            try await transport.replace(Self.updated(treatment, status: status, message: message, details: details, at: now()))
         } catch {
             log.error("Could not write the outcome of remote command %{public}@: %{public}@", command.commandId, String(describing: error))
         }
     }
 
-    static func updated(_ treatment: [String: Any], status: InboxStatus, message: String?, at date: Date) -> [String: Any] {
+    static func updated(_ treatment: [String: Any], status: InboxStatus, message: String?, details: [String: Any]? = nil, at date: Date) -> [String: Any] {
         var treatment = treatment
         treatment["status"] = status.rawValue
         if let message {
             treatment["statusMessage"] = message
+        }
+        if let details, JSONSerialization.isValidJSONObject(details) {
+            treatment["statusDetails"] = details
         }
         treatment["handledAt"] = ISO8601DateFormatter.withFractionalSeconds.string(from: date)
         return treatment

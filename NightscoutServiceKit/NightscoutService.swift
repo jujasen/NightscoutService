@@ -495,7 +495,7 @@ extension NightscoutService: RemoteCommandSourceV1Delegate {
                 
             case .bolusEntry(let bolusCommand):
                 commandType = .bolus
-                try await self.serviceDelegate?.deliverRemoteBolus(amountInUnits: bolusCommand.amountInUnits)
+                try await self.serviceDelegate?.deliverRemoteBolus(amountInUnits: bolusCommand.amountInUnits, knownDosesUntil: bolusCommand.knownDosesUntil)
                 success = true
                 message = String(format: "Bolus of %.2f units delivered successfully", bolusCommand.amountInUnits)
                 

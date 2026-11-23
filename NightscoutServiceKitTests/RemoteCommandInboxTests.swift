@@ -154,6 +154,40 @@ final class RemoteCommandInboxTests: XCTestCase {
         XCTAssertEqual(transport.writtenStatuses, ["running", "uncertain"])
     }
 
+    func testARefusalWithDetailsIsMarkedRejectedAndTheDetailsWritten() async {
+        // Loop stopped the bolus: someone gave a dose on the phone that the sender had not seen.
+        struct Stopped: LocalizedError, RemoteActionRejection {
+            var errorDescription: String? { "Nothing was given" }
+            var remoteActionDetails: [String: Any] {
+                ["reason": "unknownDoses", "doses": [["date": "2026-11-16T09:58:00.000Z", "units": 0.5, "source": "phone"]]]
+            }
+        }
+        let transport = FakeTransport(treatments: [treatment()])
+        let inbox = makeInbox(transport: transport, store: MemoryStore()) { _ in throw Stopped() }
+
+        await inbox.poll(force: true)
+
+        XCTAssertEqual(transport.writtenStatuses, ["running", "rejected"])
+        XCTAssertEqual(transport.treatments.first?["statusMessage"] as? String, "Nothing was given")
+        let details = transport.treatments.first?["statusDetails"] as? [String: Any]
+        XCTAssertEqual(details?["reason"] as? String, "unknownDoses")
+        XCTAssertEqual((details?["doses"] as? [[String: Any]])?.first?["units"] as? Double, 0.5)
+    }
+
+    func testABolusSaysWhichDosesItsSenderHadSeen() throws {
+        var dict = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(payload().utf8)) as? [String: AnyObject])
+        dict["known-doses-until"] = "2026-11-16T09:41:07.250Z" as AnyObject
+        guard case .bolusEntry(let bolus) = try dict.toRemoteNotification().toRemoteAction() else { return XCTFail("Not a bolus") }
+        XCTAssertEqual(bolus.amountInUnits, 0.5)
+        XCTAssertEqual(bolus.knownDosesUntil, ISO8601DateFormatter.withFractionalSeconds.date(from: "2026-11-16T09:41:07.250Z"))
+    }
+
+    func testABolusFromAnOlderSenderSaysNothingAboutDoses() throws {
+        let dict = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(payload().utf8)) as? [String: AnyObject])
+        guard case .bolusEntry(let bolus) = try dict.toRemoteNotification().toRemoteAction() else { return XCTFail("Not a bolus") }
+        XCTAssertNil(bolus.knownDosesUntil)
+    }
+
     func testExpiredCommandIsMarkedRejectedWithoutRunning() async {
         let transport = FakeTransport(treatments: [treatment()])
         var executed = 0
