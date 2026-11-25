@@ -1,6 +1,102 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Meal with Bolus" : {
+      "comment" : "The remote action name for a meal saved together with its bolus",
+      "extractionState" : "manual",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Måltid med bolus"
+          }
+        }
+      }
+    },
+    "%1$@ g carbs saved and %2$@ U given" : {
+      "comment" : "Outcome of a remote meal with bolus (1: grams, 2: units)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ g karbohydrater lagret og %2$@ E gitt"
+          }
+        }
+      }
+    },
+    "%1$@ g carbs saved, no bolus given" : {
+      "comment" : "Outcome of a remote meal with bolus when no bolus was needed (1: grams)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ g karbohydrater lagret, ingen bolus gitt"
+          }
+        }
+      }
+    },
+    "%1$@ g carbs saved, but the bolus was not given: %2$@" : {
+      "comment" : "Outcome of a remote meal with bolus whose carbs were saved and whose bolus failed (1: grams, 2: why)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ g karbohydrater lagret, men bolusen ble ikke gitt: %2$@"
+          }
+        }
+      }
+    },
+    "%1$@ g carbs saved. The bolus may or may not have been given: %2$@" : {
+      "comment" : "Outcome of a remote meal with bolus whose carbs were saved and whose bolus is uncertain (1: grams, 2: why)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ g karbohydrater lagret. Det er usikkert om bolusen ble gitt: %2$@"
+          }
+        }
+      }
+    },
+    "The command holds more than one kind of command. Nothing was saved or given." : {
+      "comment" : "Remote command error: the command mixes the keys of several commands, such as carbs and a bolus.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommandoen inneholder flere slags kommandoer. Ingenting ble lagret eller gitt."
+          }
+        }
+      }
+    },
+    "A meal with bolus is only accepted through Nightscout. Nothing was saved or given." : {
+      "comment" : "Remote command error: a meal with bolus arrived by push without the Nightscout command inbox.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Måltid med bolus tas bare imot gjennom Nightscout. Ingenting ble lagret eller gitt."
+          }
+        }
+      }
+    },
+    "Loop could not carry out the command. Nothing was saved or given." : {
+      "comment" : "Remote command error: the service has no host app to carry out the command.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loop kunne ikke utføre kommandoen. Ingenting ble lagret eller gitt."
+          }
+        }
+      }
+    },
     "Bolus Entry" : {
       "comment" : "The remote action name for Bolus Entry",
       "localizations" : {

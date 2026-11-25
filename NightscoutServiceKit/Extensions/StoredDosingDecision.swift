@@ -159,7 +159,8 @@ extension StoredDosingDecision {
                                    automaticDoseRecommendation: loopStatusAutomaticDoseRecommendation,
                                    recommendedBolus: loopStatusRecommendedBolus,
                                    enacted: automaticDoseDecision?.loopStatusEnacted,
-                                   failureReason: automaticDoseDecision?.loopStatusFailureReason),
+                                   failureReason: automaticDoseDecision?.loopStatusFailureReason,
+                                   testingDetails: ["remoteCommands": RemoteCommandInbox.advertisedCommands]),
             overrideStatus: overrideStatus)
     }
     

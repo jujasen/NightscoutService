@@ -27,7 +27,8 @@ import OSLog
 /// - `status`: `pending` from the sender; Loop sets `running`, then `done`, `failed`, `uncertain` or `rejected`
 /// - `statusMessage`, `handledAt`: written by Loop
 /// - `statusDetails`: written by Loop when it refused for a reason the sender can show in its own
-///   words (`RemoteActionRejection`), such as a bolus stopped by a dose the sender had not seen
+///   words (`RemoteActionRejection`), such as a bolus stopped by a dose the sender had not seen,
+///   and for every outcome of a meal with bolus (see `MealBolusAction.carryOut(with:)`)
 struct InboxCommand: Equatable {
     static let eventType = "Remote Command"
     /// A command must expire this soon after it was sent, so nothing old is ever carried out.
@@ -99,6 +100,31 @@ struct InboxCommand: Equatable {
         }
         return notification
     }
+}
+
+/// What a command did, written back into it.
+struct InboxResult: ExpressibleByStringLiteral {
+    let message: String
+    var details: [String: Any]?
+
+    init(message: String, details: [String: Any]? = nil) {
+        self.message = message
+        self.details = details
+    }
+
+    init(stringLiteral message: String) {
+        self.init(message: message)
+    }
+}
+
+/// A command that did not do all it was meant to, with the status and details to write back.
+struct InboxFailure: LocalizedError {
+    let status: InboxStatus
+    let message: String
+    let details: [String: Any]?
+    let underlyingError: Error
+
+    var errorDescription: String? { message }
 }
 
 enum InboxStatus: String {
@@ -183,7 +209,12 @@ final class UserDefaultsRemoteCommandHandledStore: RemoteCommandHandledStore {
 
 /// Fetches the commands waiting in Nightscout and carries each out once.
 actor RemoteCommandInbox {
-    typealias Execute = (_ notification: [String: AnyObject]) async throws -> String
+    typealias Execute = (_ notification: [String: AnyObject]) async throws -> InboxResult
+
+    /// Commands beyond the usual ones that this Loop carries out from the inbox, uploaded in every
+    /// device status as `loop.testingDetails.remoteCommands`. LoopFollow offers a command only when
+    /// it is listed (`Storage.loopRemoteCommands`).
+    static let advertisedCommands = [MealBolusAction.kind]
 
     /// Loop runs every five minutes; don't look more often than this unless a push asks.
     static let minimumPollInterval: TimeInterval = 20
@@ -292,10 +323,16 @@ actor RemoteCommandInbox {
         let message: String
         var details: [String: Any]?
         do {
-            message = try await execute(notification)
+            let result = try await execute(notification)
+            message = result.message
+            details = result.details
             status = .done
         } catch {
-            if case PumpManagerError.uncertainDelivery = error {
+            if let failure = error as? InboxFailure {
+                // The command said itself what happened (a meal with bolus whose carbs were saved).
+                status = failure.status
+                details = failure.details
+            } else if case PumpManagerError.uncertainDelivery = error {
                 status = .uncertain
             } else if let rejection = error as? RemoteActionRejection {
                 // Loop chose to give nothing, and says why in a form the sender can show.

@@ -77,8 +77,16 @@ public final class NightscoutService: Service {
                 guard let self else { throw NightscoutServiceError.missingCommandSource }
                 let remoteNotification = try notification.toRemoteNotification()
                 let action = remoteNotification.toRemoteAction()
+                if case .mealBolus(let mealBolusAction) = action {
+                    // Only from the inbox: what was done goes back into the command, also when
+                    // only the carbs were saved.
+                    return try await mealBolusAction.carryOut { [weak self] mealBolus in
+                        guard let delegate = self?.serviceDelegate else { throw RemoteActionHostMissing() }
+                        return try await delegate.deliverRemoteMealBolus(mealBolus)
+                    }
+                }
                 try await self.commandSourceV1(self.commandSourceV1, handleAction: action, remoteNotification: remoteNotification)
-                return action.description
+                return InboxResult(message: action.description)
             }
         )
     }
@@ -523,6 +531,11 @@ extension NightscoutService: RemoteCommandSourceV1Delegate {
                 try await self.serviceDelegate?.editRemoteCarbs(edit)
                 success = true
                 message = edit.delete ? "Carb entry deleted successfully" : "Carb entry updated successfully"
+
+            case .mealBolus:
+                // Carried out from the command inbox only (see `makeRemoteCommandInbox`).
+                commandType = .bolus
+                throw MealBolusNotFromInbox()
             }
         } catch {
             message = "Command failed: \(error.localizedDescription)"

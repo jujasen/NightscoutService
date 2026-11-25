@@ -90,19 +90,34 @@ extension Dictionary<String, AnyObject> {
     
     enum RemoteNotificationError: LocalizedError {
         case unhandledNotification([String: AnyObject])
+        /// Carbs and a bolus in keys of different commands: carrying out one of them would give
+        /// half of what was meant, so neither is.
+        case ambiguousNotification
         
         var errorDescription: String? {
             switch self {
             case .unhandledNotification(let notification):
                 return String(format: NSLocalizedString("Unhandled Notification: %1$@", comment: "The prefix for the remote unhandled notification error. (1: notification payload)"), notification)
+            case .ambiguousNotification:
+                return LocalizedString("The command holds more than one kind of command. Nothing was saved or given.", comment: "Remote command error: the command mixes the keys of several commands, such as carbs and a bolus.")
             }
         }
     }
     
     func toRemoteNotification() throws -> RemoteNotification {
-        if BolusRemoteNotification.includedInNotification(self) {
+        let hasBolus = BolusRemoteNotification.includedInNotification(self)
+        let hasCarbs = CarbRemoteNotification.includedInNotification(self)
+        // A meal with bolus first: it must never be read as a plain bolus or plain carbs.
+        if MealBolusRemoteNotification.includedInNotification(self) {
+            guard !hasBolus, !hasCarbs else {
+                throw RemoteNotificationError.ambiguousNotification
+            }
+            return try MealBolusRemoteNotification(dictionary: self)
+        } else if hasBolus && hasCarbs {
+            throw RemoteNotificationError.ambiguousNotification
+        } else if hasBolus {
             return try BolusRemoteNotification(dictionary: self)
-        } else if CarbRemoteNotification.includedInNotification(self) {
+        } else if hasCarbs {
             return try CarbRemoteNotification(dictionary: self)
         }  else if OverrideRemoteNotification.includedInNotification(self) {
             return try OverrideRemoteNotification(dictionary: self)

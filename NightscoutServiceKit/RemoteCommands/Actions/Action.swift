@@ -15,6 +15,7 @@ public enum Action: Codable {
     case carbsEntry(CarbAction)
     case therapySettings(TherapySettingsAction)
     case carbsEdit(CarbEditAction)
+    case mealBolus(MealBolusAction)
     
     public var description: String {
         return "\(actionName) \(actionParameterDescription)"
@@ -37,6 +38,8 @@ public enum Action: Codable {
                 return LocalizedString("Delete Carb Entry", comment: "The remote action name for deleting a carb entry")
             }
             return LocalizedString("Edit Carb Entry", comment: "The remote action name for editing a carb entry")
+        case .mealBolus:
+            return LocalizedString("Meal with Bolus", comment: "The remote action name for a meal saved together with its bolus")
         }
     }
     
@@ -60,6 +63,10 @@ public enum Action: Codable {
             }
             let amountFormatted = Self.numberFormatter.string(from: amountInGrams as NSNumber) ?? ""
             return "\(amountFormatted)" + " " + carbGramAbbreviation
+        case .mealBolus(let mealBolusAction):
+            let carbsFormatted = Self.numberFormatter.string(from: mealBolusAction.amountInGrams as NSNumber) ?? ""
+            let bolusFormatted = Self.numberFormatter.string(from: mealBolusAction.bolusInUnits as NSNumber) ?? ""
+            return "\(carbsFormatted) \(carbGramAbbreviation), \(bolusFormatted) \(bolusUnitAbbreviation)"
         }
     }
     
